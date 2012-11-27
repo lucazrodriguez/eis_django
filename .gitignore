@@ -1,0 +1,10 @@
+*.pyc
+*.swp
+*.swo
+*.sqlite
+/build
+/dist
+*.egg-info
+*.egg
+*~
+

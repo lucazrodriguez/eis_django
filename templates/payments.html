@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %} Bank Site {% endblock %}
+{% block content %}
+
+<script type="text/javascript">
+function isValid(form)
+{
+if(form.number.value == '')
+{
+alert("You must enter something in the box.");
+form.number.focus();
+return false;
+}
+else if(form.number.value.length < 3)
+{
+alert("You must enter a currency value\ne.g. 1.23");
+form.number.focus();
+form.number.value = '';
+return false;
+}
+else if (!/^\$?\d+(\.\d{2})?$/.test(form.number.value)) {
+alert("You can only enter numbers");
+form.number.focus();
+form.number.value = '';
+return false;
+}
+else if(form.amount_charged.value > form.number.value)
+{
+alert("You'll have to pay the diference in your next bill\ne.g. 1.23");
+}
+else if(form.amount_charged.value < form.number.value)
+{
+alert("You'll have a bonus in your next bill\ne.g. 1.23");
+}
+</script>
+
+<h2> Payments </h2>
+<p>
+
+<form name="form1" div align = center method = 'POST' action="#" onsubmit="return isValid(this)">  {% csrf_token %}
+	 <h2> <label> Select the bill for the payment: </label> <h2>
+	<select name=bill id = "bill">
+	<option name=first value="House bill"> House bill </option>
+	<option name=second value="Eletricity bill"> Eletricity bill </option>
+	<option name=third value="Water bill"> Water bill </option>
+	<option name=fourth value="Credit card bill"> Credit card bill </option>
+	</select>
+	<h2> <label> Amount charged: </label> </h2>
+	<br>
+	<input type="text" name="amount_charged" id = "amount_charged" maxlength="40" size="20"> {% csrf_token %}
+	<h2> <label> Your payment: </label> </h2>
+	<br>
+	<input type="text" name="number" id = "number" maxlength="40" size="20"> {% csrf_token %}
+	<p>
+	<br>
+	<input type="submit" name="button" value="OK"> {% csrf_token %}
+</form>
+
+{% endblock %}

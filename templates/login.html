@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %} Bank Site {% endblock %}
+{% block content %}
+<form name="loginform" method="POST" action="logged" div align = center>
+	<br>
+	<label><h2> Account: </h2><br> 
+	<input type="text" name="account" id="account"size="27">{% csrf_token %}
+	</label>
+	<br>
+	<label><h2> Password: </h2><br>
+	<input type="password" name="password" id="password" size="27">{% csrf_token %}
+	</label>
+	<br>
+	<label>
+	<input type="submit" name="button" value="Enter">{% csrf_token %}
+	</label>
+</form>
+{% endblock %}

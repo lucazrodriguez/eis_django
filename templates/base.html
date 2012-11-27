@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Language" content="en-us" />
+    <title>EIS Patterns | {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}layout.css"/>
+    {% block extrahead %}{% endblock %}
+  </head>
+  <body id="{% block sectionid %}generic{% endblock %}" class="{% block coltype %}default{% endblock %}">
+  <h2> Bank System Site </h2>
+  <div id="container">
+    <div id="header">
+        <ul id="nav-global">
+        <li id="nav-homepage"><a href="/home">Home</a></li>
+        <li id="nav-homepage"><a href="/login">Login</a></li>
+        <li id="nav-account"><a href="/balance"> Balance </a></li>
+        <li id="nav-transfer"><a href="/transfer"> Transfer </a></li>
+        <li id="nav-loan"><a href="/loans">Loans</a></li>
+        <li id="nav-payments"><a href="/payments">Payments</a></li>
+        <li id="nav-contact"><a href="/contact">Contact</a></li>
+        <li id="nav-about"><a href="/about">About us</a></li>
+      </ul>
+    </div>
+    <!-- END Header -->
+    <div id="billboard">{% block billboard %}{% endblock %}</div>
+    <div id="columnwrap">
+      {% block columnwrap %}
+        <div id="content-main">
+        {% block content %}{% endblock %}
+        </div>
+        <!-- END #content-main -->
+      {% endblock %}
+    </div>
+    <!-- END #content -->
+    <div id="footer">
+	  <p>Thanks for visiting us !!</p>
+      <p>&copy; {% now "Y" %} 
+      <hr>
+      </p>
+    </div>
+    <!-- END #footer -->
+  </div>
+  <!-- END #container -->
+  </body>
+</html>

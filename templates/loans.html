@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %} Bank Site {% endblock %}
+
+{% block content %}
+
+<script type="text/javascript">
+function isValid(form)
+{
+if(form.loan.value == '')
+{
+alert("You must enter something in the box.");
+form.loan.focus();
+return false;
+}
+else if(form.loan.value.length < 3)
+{
+alert("You must enter a currency value\ne.g. 1.23");
+form.loan.focus();
+form.loan.value = '';
+return false;
+}
+else if (!/^\$?\d+(\.\d{2})?$/.test(form.loan.value)) {
+alert("You can only enter numbers");
+form.loan.focus();
+form.loan.value = '';
+return false;
+}
+}
+</script>
+
+<h2> Loans </h2>
+
+<form name="form1" div align = center method = 'POST' action="#" onsubmit="return isValid(this)">  {% csrf_token %}
+	<h2> <label> Amount to Loan: </label> </h2>
+	<br>
+	<input type="text" name="loan" id="loan" maxlength="40" size="20"> {% csrf_token %}
+	<br>
+	<br>
+	<h2> <label> Analyst Register: </label> </h2>
+	<br>
+	<input type="text" name="analyst" id = "analyst" maxlength="40" size="20"> {% csrf_token %}
+	<br>
+	<br>
+	<input type="submit" name="button" value="OK"> {% csrf_token %}
+</form>
+
+{% endblock %}
