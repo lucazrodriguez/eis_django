@@ -26,6 +26,9 @@ from domain.resource.operation import operation
 from django.contrib.auth.models import User
 import jsonpickle
 
+a_machine = Machine()
+a_person = Person()
+
 ################################################# DECORATOR: BANK ACCOUNT ##############################################################
 
 # A classe ClientName é para a atribuição automática do nome do cliente na sua conta 
@@ -58,9 +61,14 @@ class BankAccountDecorator(models.Model, Decorator):
     average_credit = models.IntegerField(default=0)
     client = models.ForeignKey(ClientName, related_name = 'client')
     id_active_accounts = models.IntegerField(default=1)
-    loan_request_times = models.IntegerField(default=0)
+    loan_request_times = models.IntegerField(default=0) 
+
+    def self_decorate(self):
+        self.decorate(a_machine)
+
 
     def save(self, *args, **kwargs):
+        self.self_decorate()
         super(BankAccountDecorator, self).save(*args, **kwargs)
         Decorator.__init__(self)
 
@@ -130,14 +138,19 @@ class BankAccountDecorator(models.Model, Decorator):
 
 class CreditAnalystDecorator(models.Model, Decorator):
     '''Credit Analyst'''
-    decoration_rules = ['should_have_employee_decorator']
+    
+    decoration_rules = ['should_be_instance_of_person']    #should_have_employee_decorator
 
     id = models.AutoField(primary_key=True)
     description = "An employee with credit analysis skills"
     register = models.CharField(max_length="20")
     loan_limit = models.IntegerField(default=0)
 
+    def self_decorate(self):
+            self.decorate(a_person)
+
     def save(self, *args, **kwargs):
+        self.self_decorate()
         super(CreditAnalystDecorator, self).save(*args, **kwargs)
         Decorator.__init__(self)
 
@@ -197,14 +210,21 @@ class CreditAnalystDecorator(models.Model, Decorator):
 ################################################# DECORATOR: EMPLOYEE ##############################################################
 
 class EmployeeDecorator(models.Model, Decorator):
+    
     '''A general purpose Employee decorator'''
+    
     decoration_rules = ['should_be_instance_of_person']
 
     id = models.AutoField(primary_key=True)
     description = "Supplies the basis for representing employes"
     name = models.CharField(max_length='70')
 
+    def self_decorate(self):
+        self.decorate(a_person)
+
+
     def save(self, *args, **kwargs):
+        self.self_decorate()
         super(EmployeeDecorator, self).save(*args, **kwargs)
         Decorator.__init__(self)
 
@@ -215,8 +235,9 @@ class EmployeeDecorator(models.Model, Decorator):
 
 ################################################# DECORATOR: CLIENT ##############################################################
 
-class ClientDecorator(User, Decorator):
-    '''A general porpuse Client decorator'''
+'''class ClientDecorator(User, Decorator):
+    A general porpuse Client decorator
+  
     decoration_rules = ['should_be_instance_of_person']
 
     def save(self, *args, **kwargs):
@@ -224,12 +245,12 @@ class ClientDecorator(User, Decorator):
             User.__init__(self)
             Decorator.__init__(self)
 
-#    class Meta:
-#       app_label = 'global_variables'
+    class Meta:
+       app_label = 'global_variables'
 
     def generate_register(self, register):
-        ''' generates the register number for the client'''
-        self.register = register
+        generates the register number for the client
+        self.register = register'''
 
 
 ################################################# DECORATOR: ATTENDANT ##############################################################
@@ -242,7 +263,11 @@ class AttendantDecorator(models.Model, Decorator):
     description = "An employee with attendant skills"
     name = models.CharField(max_length='40')
 
+    def self_decorate(self):
+        self.decorate(a_person)
+
     def save(self, *args, **kwargs):
+        self.self_decorate()
         super(AttendantDecorator, self).save(*args, **kwargs)
         Decorator.__init__(self)
 
@@ -272,6 +297,10 @@ class ContactDecorator(models.Model,Decorator):
     telephone = models.CharField(max_length="20")
     comments = models.TextField()
 
+    def self_decorate(self):
+        self.decorate(a_machine)
+
     def save(self, *args, **kwargs):
+        self.self_decorate()
         super(ContactDecorator, self).save(*args, **kwargs)
         Decorator.__init__(self)

@@ -14,9 +14,7 @@ from bank_system.resources.bill import Bill
 class BankAccountDecoratorTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.a_client_decorator = ClientDecorator()
         self.a_client = Person()
-        self.a_client_decorator.decorate(self.a_client)
         self.a_machine = Machine()
         self.a_number = User.objects.model(pk = 1 , username = '11111-1', email = 'First@email', first_name = 'First', last_name = 'Last')
         self.client_name = ClientName(pk = 1)
@@ -64,7 +62,7 @@ class BankAccountDecoratorTestCase(unittest.TestCase):
 
     def test_check_the_client(self):
         #should work
-        self.a_client |should| have(2).decorators
+        self.a_client |should| have(1).decorators
         self.a_bank_account_decorator.client |should| be(self.client_name)
         self.another_bank_account_decorator.client |should| be(self.another_client_name)
 
@@ -92,15 +90,14 @@ class CreditAnalystDecoratorTestCase(unittest.TestCase):
         #test doubles won't work given type checking rules, using classic
         self.a_person = Person()
         self.a_client = Person()
-        a_client_decorator = ClientDecorator()
-        a_client_decorator.decorate(self.a_client)
         self.a_number = User.objects.model(pk = 1, username = '11111-1', email = 'First@email', first_name = 'First', last_name = 'Last')
         self.client_name = ClientName(pk = 1)
+        self.a_number.decorate(self.a_client)
         self.an_account = BankAccountDecorator.objects.create(number = self.a_number, client = self.client_name)
 
     def test_decorates_a_person(self):
         #should fail
-        decorate, _, _ = self.a_credit_analyst_decorator.decorate(self.a_person)
+        decorate, _, _ = self.a_credit_analyst_decorator.decorate('im not a person')
         decorate |should| equal_to(False)
         #should work
         an_employee_decorator = EmployeeDecorator()
@@ -200,7 +197,7 @@ class EmployeeDecoratorTestCase(unittest.TestCase):
 
 ################################################# CLIENT ###################################################################
 
-class ClientDecoratorTestCase(unittest.TestCase):
+'''class ClientDecoratorTestCase(unittest.TestCase):
 
     def setUp(self):
         self.a_client_decorator = ClientDecorator()
@@ -214,7 +211,7 @@ class ClientDecoratorTestCase(unittest.TestCase):
 
     def test_generates_a_register(self):
         self.a_client_decorator.generate_register('12345-6')
-        self.a_client_decorator.register |should| equal_to('12345-6')
+        self.a_client_decorator.register |should| equal_to('12345-6')'''
 
 ################################################# LOAN REQUEST ###################################################################
 
@@ -312,10 +309,9 @@ class AttendantDecoratorTestCase(unittest.TestCase):
         #Discounting a check, it should work!
         self.a_machine = Machine()
         self.a_client = Person()
-        self.a_client_decorator = ClientDecorator()
-        self.a_client_decorator.decorate(self.a_client)
         self.a_number = User.objects.model(pk = 1, username = '12345-6', email = 'First@email', first_name = 'First', last_name = 'Last')
         self.client_name = ClientName(pk = 1)
+        self.a_number.decorate(self.a_client)        
         self.a_bank_account_decorator = BankAccountDecorator.objects.create(number = self.a_number, client = self.client_name, id_active_accounts= "2")
         self.a_bank_account_decorator.decorate(self.a_machine)
         self.a_bank_account_decorator.deposit(100)
