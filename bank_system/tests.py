@@ -113,7 +113,7 @@ class CreditAnalystDecoratorTestCase(unittest.TestCase):
         self.a_credit_analyst_decorator.create_loan_request(self.an_account, 10000)
         self.a_person.input_area |should| contain(self.a_number)
 
-    def test_analyses_a_loan_request(self):
+    def test_analyzes_a_loan_request(self):
         an_employee_decorator = EmployeeDecorator()
         an_employee_decorator.decorate(self.a_person)
         #Stub removed, from now on Node really transfers resources internally
@@ -121,11 +121,11 @@ class CreditAnalystDecoratorTestCase(unittest.TestCase):
         self.an_account.average_credit = 5000
         #should approve
         self.a_credit_analyst_decorator.create_loan_request(self.an_account, 10000)
-        self.a_credit_analyst_decorator.analyse(self.an_account.number)
+        self.a_credit_analyst_decorator.analyze(self.an_account.number)
         self.a_credit_analyst_decorator.decorated.output_area[self.a_number].approved |should| equal_to(True)
         #should refuse
         self.a_credit_analyst_decorator.create_loan_request(self.an_account, 50000)
-        self.a_credit_analyst_decorator.analyse(self.an_account.number)
+        self.a_credit_analyst_decorator.analyze(self.an_account.number)
         self.a_credit_analyst_decorator.decorated.output_area[self.a_number].approved |should| equal_to(False)
 
     def test_creates_a_loan(self):

@@ -139,7 +139,7 @@ class BankAccountDecorator(models.Model, Decorator):
 class CreditAnalystDecorator(models.Model, Decorator):
     '''Credit Analyst'''
     
-    decoration_rules = ['should_be_instance_of_person']    #should_have_employee_decorator
+    decoration_rules = ['should_be_instance_of_person']  #  should_be_instance_of_person
 
     id = models.AutoField(primary_key=True)
     description = "An employee with credit analysis skills"
@@ -147,12 +147,14 @@ class CreditAnalystDecorator(models.Model, Decorator):
     loan_limit = models.IntegerField(default=0)
 
     def self_decorate(self):
-            self.decorate(a_person)
+        self.an_employee = EmployeeDecorator()
+        self.decorate(self.an_employee)
 
     def save(self, *args, **kwargs):
         self.self_decorate()
         super(CreditAnalystDecorator, self).save(*args, **kwargs)
         Decorator.__init__(self)
+
 
     @operation(category='business')
     def create_loan_request(self, account, value):
@@ -163,7 +165,7 @@ class CreditAnalystDecorator(models.Model, Decorator):
 
     #stupid credit analysis, only for demonstration
     @operation(category='business')
-    def analyse(self, loan_request_key):
+    def analyze(self, loan_request_key):
         ''' automatically analyses a loan request '''
         if not self.decorated.input_area.has_key(loan_request_key): return False
         #move the request from the input_area to the processing_area
@@ -207,7 +209,7 @@ class CreditAnalystDecorator(models.Model, Decorator):
     def change_loan_limit(self, new_limit):
         self.loan_limit = new_limit
 
-################################################# DECORATOR: EMPLOYEE ##############################################################
+################################################# DECORATOR: EMPLOYEE #############################################################
 
 class EmployeeDecorator(models.Model, Decorator):
     

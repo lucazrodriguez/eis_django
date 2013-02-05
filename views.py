@@ -33,11 +33,11 @@ def login(request):
                 
                 user = User.objects.get(username = accountUser)
                 user.self_decorate()
-                user.save_base()
+                user.save()
                 
                 account = BankAccountDecorator.objects.get(number = user)
                 account.self_decorate()
-                account.save_base()
+                account.save()
 
                 if request.POST.get('next'):
                     return HttpResponseRedirect(request.POST.get('next'))
@@ -65,7 +65,7 @@ def contact(request):
 
         contact = ContactDecorator.objects.create(first_name = first_name, last_name = last_name , emailUser = email , telephone = telephone , comments = comments)
         contact.self_decorate()
-        contact.save_base()
+        contact.save()
 
         return render_to_response('send.html',RequestContext(request))        
 
@@ -79,11 +79,11 @@ def balance(request):
 
     user = User.objects.get(username = request.user)
     user.self_decorate()
-    user.save_base()
+    user.save()
 
     account = BankAccountDecorator.objects.get(number = user)
     account.self_decorate()
-    account.save_base()
+    account.save()
 
     number = account.number
     client = account.client
@@ -106,14 +106,14 @@ def transfer(request):
         
         user = User.objects.get(username = request.user)
         user.self_decorate()
-        user.save_base()
+        user.save()
         
         bank_account = BankAccountDecorator.objects.get(number = user)
         bank_account.self_decorate()
         
         user = User.objects.get(username = accountNumber)
         user.self_decorate()
-        user.save_base()
+        user.save()
         
         the_other_bank_account = BankAccountDecorator.objects.get(number = user)
         the_other_bank_account.self_decorate()
@@ -124,8 +124,8 @@ def transfer(request):
         bank_account.log_area += '/  / Transfer: ' + str(user) + ' Value: ' + str(amountTransfer) + "  /  /\n\n"
         
         bank_account.transfer(amountTransfer,the_other_bank_account)
-        bank_account.save_base()
-        the_other_bank_account.save_base()
+        bank_account.save()
+        the_other_bank_account.save()
 
         return render_to_response('sucess.html',context_instance = RequestContext(request,{}))
 
@@ -143,7 +143,7 @@ def loans(request):
 
         user = User.objects.get(username = request.user)
         user.self_decorate()
-        user.save_base()
+        user.save()
 
         bank_account = BankAccountDecorator.objects.get(number = user)
         bank_account.self_decorate()
@@ -160,7 +160,7 @@ def loans(request):
         a_loan_request = LoanRequest(bank_account,amount_loan,credit_analyst)
         a_loan = Loan(a_loan_request)
         
-        bank_account.save_base()
+        bank_account.save()
 
         return render_to_response('sucess.html',locals(),context_instance = RequestContext(request, {}))
 
@@ -178,7 +178,7 @@ def payments(request):
         
         user = User.objects.get(username = request.user)
         user.self_decorate()
-        user.save_base()
+        user.save()
 
         bank_account = BankAccountDecorator.objects.get(number = user)
         bank_account.self_decorate()
@@ -190,7 +190,7 @@ def payments(request):
         bank_account.log_area += '/  / Payment: ' + str(bill) + ' Value: ' + str(amount_charged) + ' Payed: ' + str(payment) + "/  /\n\n"
         
         bill_payment = Bill(bank_account,bill,payment,amount_charged)
-        bank_account.save_base()
+        bank_account.save()
 
         return render_to_response('sucess.html',locals(),context_instance = RequestContext(request, {}))
         
