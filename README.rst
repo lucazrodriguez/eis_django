@@ -61,3 +61,14 @@ Run only acceptance specs::
 
     $ make acceptance
 
+Run the server:
+
+    $ python manage.py runserver
+
+To install the Coverage:
+
+    $ pip install coverage
+
+Run the tests:
+
+    $ python manage.py test --with-spec --spec-color --with-cover --cover-erase bank_system/tests.py

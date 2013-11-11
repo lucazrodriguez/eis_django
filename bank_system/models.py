@@ -61,7 +61,7 @@ class BankAccountDecorator(models.Model, Decorator):
     average_credit = models.IntegerField(default=0)
     client = models.ForeignKey(ClientName, related_name = 'client')
     id_active_accounts = models.IntegerField(default=1)
-    loan_request_times = models.IntegerField(default=0) 
+    loan_request_times = models.IntegerField(default=0)
 
     def self_decorate(self):
         self.decorate(a_machine)
